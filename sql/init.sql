@@ -1,0 +1,69 @@
+-- Active: 1684754852851@@172.18.187.253@3306@db_image_sharing
+CREATE DATABASE IF NOT EXISTS db_image_sharing
+    DEFAULT CHARACTER SET = 'utf8mb4';
+
+USE db_image_sharing;
+DROP TABLE IF EXISTS t_pic_to_tag;
+DROP TABLE IF EXISTS t_favorite;
+DROP TABLE IF EXISTS t_image;
+DROP TABLE IF EXISTS t_tag;
+DROP TABLE IF EXISTS t_artist;
+DROP TABLE IF EXISTS t_user;
+
+
+CREATE TABLE t_user (
+    UID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nickname VARCHAR(32),
+    email VARCHAR(32),
+    birthday DATE,
+    gender ENUM('MALE', 'FEMALE', 'Other'),
+    country VARCHAR(32),
+    passwd VARCHAR(64)
+);
+
+CREATE TABLE t_artist (
+    CID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nickname VARCHAR(32),
+    email VARCHAR(32),
+    birthday DATE,
+    gender ENUM('MALE', 'FEMALE', 'Other'),
+    country VARCHAR(32),
+    passwd VARCHAR(64)
+);
+
+CREATE TABLE t_image (
+    PID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    URL VARCHAR(128),
+    resolution VARCHAR(32),
+    upload_time DATETIME,
+    num_like INT UNSIGNED DEFAULT 0,
+    num_star INT UNSIGNED DEFAULT 0,
+    num_view INT UNSIGNED DEFAULT 0,
+    uploader INT UNSIGNED,
+    FOREIGN KEY (uploader) REFERENCES t_artist(CID) ON DELETE CASCADE
+);
+
+CREATE TABLE t_favorite (
+    PID INT UNSIGNED,
+    user INT UNSIGNED,
+    FOREIGN KEY (PID) REFERENCES t_image(PID) ON DELETE CASCADE,
+    FOREIGN KEY (user) REFERENCES t_user(UID) ON DELETE CASCADE,
+    UNIQUE KEY(user, PID)
+);
+
+
+CREATE TABLE t_tag (
+    TID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    tname VARCHAR(32),
+    UNIQUE KEY(TID, tname)
+);
+
+
+CREATE TABLE t_pic_to_tag (
+    PID INT UNSIGNED,
+    TID INT UNSIGNED,
+    FOREIGN KEY (PID) REFERENCES t_image(PID) ON DELETE CASCADE,
+    FOREIGN KEY (TID) REFERENCES t_tag(TID) ON DELETE CASCADE,
+    UNIQUE KEY(PID, TID)
+);
+
