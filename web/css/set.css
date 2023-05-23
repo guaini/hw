@@ -24,8 +24,7 @@ body {
 
 .login-screen {
     background: rgba(255, 255, 255, 0.4);
-    padding: 60px;
-    padding-top: 20px;
+    padding: 20px 60px 60px;
     border-radius: 20px
 }
 
