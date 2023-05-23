@@ -94,7 +94,7 @@
                     }else{
                         alert("登出成功")
                         window.localStorage.removeItem("token");
-                        window.location.href = "/index.html";
+                        window.location.href = "./index.html";
                     }
                 })
             }
@@ -206,7 +206,7 @@
     
                         if(response.data.ret == 0){
                             window.localStorage.setItem("token", response.data.token);
-                            window.location.href = "/index.html";
+                            window.location.href = "./index.html";
                         }
                     }) 
                 }else{
@@ -228,13 +228,14 @@
     
                         if(response.data.ret == 0){
                             window.localStorage.setItem("token", response.data.token);
-                            window.location.href = "/index.html";
+                            window.location.href = "./index.html";
                         }
                     }) 
                 }
             }
             
         </script>
+    </div>
 </body>
 
 </html>
