@@ -185,7 +185,7 @@
   </div>
   <div class="nav fr">
     <ul>
-      <li><a href="login.jsp">登录/注册</a></li>
+      <li><a href="login.html">登录/注册</a></li>
       <li><a href="./upload.html">上传</a></li>
       <li><a href="./star.html">收藏</a></li>
       <li><a href="./set.html">设置</a></li>
