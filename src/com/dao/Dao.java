@@ -9,5 +9,5 @@ public interface Dao {
     //用户登录
     public User login(User user);
     //用户注册
-    public int addUser(User user);
+    public String addUser(User user);
 }

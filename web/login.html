@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">	
 	<title>登录|注册</title>
 	<!-- 图标库npmjs.com -->
+
 	<link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="css/login.css">
     <link rel="stylesheet" type="text/css" href="css/float_windows.css">
@@ -50,7 +51,7 @@
                 </div>
                 <div class="content">
                     <div class="errormsg"></div>
-                    <form action="/login" method="post">
+                    <form action="/loginServlet" method="post">
                         <div class="input-field">
                             <i class="fa fa-user-o"></i>
                             <input name="username" type="text" placeholder="用户名">
@@ -75,7 +76,7 @@
                 </div>
                 <div class="content">
                     <div class="errormsg"></div>
-                    <form action="/register" method="post">
+                    <form action="/RegisterServlet" method="post">
                         <div class="input-field">
                             <i class="fa fa-user-o"></i>
                             <input name="username" type="text" placeholder="输入用户名">
@@ -131,13 +132,13 @@
             node.onclick = function(){
                 $('.flip-modal').classList.remove('register')
                 $('.flip-modal').classList.add('login')
-            }      
+            }
         })
         $$('.modal .register').forEach(function(node){
             node.onclick = function(){
                 $('.flip-modal').classList.remove('login')
                 $('.flip-modal').classList.add('register')
-            }      
+            }
         })
         $(".close").onclick = function(){
             $('.flip-modal').classList.remove('show')
@@ -150,7 +151,7 @@
             e.stopPropagation()
             $('.flip-modal').classList.add('show')
         }
-        
+
         $('.modal-login form').addEventListener('submit', function(e){
             e.preventDefault()
             var username = $('.modal-login input[name=username]').value;
@@ -168,21 +169,21 @@
                 return false
             }
 
-            axios.post("http://43.139.215.45:80/api/User", {
-                action: "login",
-                username: username, 
-                password: password
-            })
-            .then(function (response) {
-                console.log(response)
-                alert(response.data.msg)
-                if(response.data.ret == 0){
-                    window.localStorage.setItem("token", response.data.token);
-                    window.location.href = "./index.html";
-                }else if(localStorage.getItem("token") != null){
-                    window.localStorage.removeItem("token");
-                }
-            }) 
+            // axios.post("http://43.139.215.45:80/api/User", {
+            //     action: "login",
+            //     username: username,
+            //     password: password
+            // })
+            // .then(function (response) {
+            //     console.log(response)
+            //     alert(response.data.msg)
+            //     if(response.data.ret == 0){
+            //         window.localStorage.setItem("token", response.data.token);
+            //         window.location.href = "./index.html";
+            //     }else if(localStorage.getItem("token") != null){
+            //         window.localStorage.removeItem("token");
+            //     }
+            // })
 
         })
 
@@ -204,24 +205,24 @@
                 $('.modal-register .errormsg').innerText = '两次输入的密码不一致'
                 return false
             }
-            var username = $('.modal-register input[name=username]').value;
-            var password = $('.modal-register input[name=password]').value;
-            axios.post("http://43.139.215.45:80/api/User", {
-                action: "register",
-                data: {
-                    username: username, 
-                    passwd: password
-                }
-            })
-            .then(function (response) {
-                console.log(response)
-                if(response.data.ret == 0){
-                    alert("注册成功");
-                    window.location.href = "./login.html";
-                }else{
-                    alert(response.data.msg);
-                }
-            })
+            // var username = $('.modal-register input[name=username]').value;
+            // var password = $('.modal-register input[name=password]').value;
+            // axios.post("http://43.139.215.45:80/api/User", {
+            //     action: "register",
+            //     data: {
+            //         username: username,
+            //         passwd: password
+            //     }
+            // })
+            // .then(function (response) {
+            //     console.log(response)
+            //     if(response.data.ret == 0){
+            //         alert("注册成功");
+            //         window.location.href = "./login.html";
+            //     }else{
+            //         alert(response.data.msg);
+            //     }
+            // })
         })
 
     </script>
