@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">	
 	<title>登录|注册</title>
 	<!-- 图标库npmjs.com -->
-
 	<link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="css/login.css">
     <link rel="stylesheet" type="text/css" href="css/float_windows.css">
@@ -14,7 +13,7 @@
 </head>
 <body>
     <div class="outer-menu">
-        <input class="checkbox-toggle" type="checkbox">
+        <input class="checkbox-toggle" type="checkbox" />
         <div class="hamburger">
             <div></div>
         </div>
@@ -22,10 +21,10 @@
             <div>
                 <div>
                     <ul>
-                        <li><a href="./index.html">首页</a></li>
-                        <li><a href="./upload.html">上传</a></li>
-                        <li><a href="./star.html">收藏</a></li>
-                        <li><a href="./set.html">设置</a></li>
+                        <li><a href="/index.html">首页</a></li>
+                        <li><a href="/upload.html">上传</a></li>
+                        <li><a href="/star.html">收藏</a></li>
+                        <li><a href="/set.html">设置</a></li>
                         <li><a href="login.html">登录/注册</a></li>
                         <li><a href="#" onclick="log_out()">登出</a></li>
                     </ul>
@@ -51,11 +50,7 @@
                 </div>
                 <div class="content">
                     <div class="errormsg"></div>
-<<<<<<< HEAD
-                    <form action="/loginServlet" method="post">
-=======
-                    <form action="login.jsp" method="post">
->>>>>>> 952f81f6cdd95242d87c85cdd8281997cc160094
+                    <form action="login" method="post">
                         <div class="input-field">
                             <i class="fa fa-user-o"></i>
                             <input name="username" type="text" placeholder="用户名">
@@ -80,7 +75,7 @@
                 </div>
                 <div class="content">
                     <div class="errormsg"></div>
-                    <form action="/RegisterServlet" method="post">
+                    <form action="/register" method="post">
                         <div class="input-field">
                             <i class="fa fa-user-o"></i>
                             <input name="username" type="text" placeholder="输入用户名">
@@ -121,7 +116,7 @@
                 }else{
                     alert("登出成功")
                     window.localStorage.removeItem("token");
-                    window.location.href = "./index.html";
+                    window.location.href = "/index.html";
                 }
             })
         }
@@ -136,13 +131,13 @@
             node.onclick = function(){
                 $('.flip-modal').classList.remove('register')
                 $('.flip-modal').classList.add('login')
-            }
+            }      
         })
         $$('.modal .register').forEach(function(node){
             node.onclick = function(){
                 $('.flip-modal').classList.remove('login')
                 $('.flip-modal').classList.add('register')
-            }
+            }      
         })
         $(".close").onclick = function(){
             $('.flip-modal').classList.remove('show')
@@ -155,7 +150,7 @@
             e.stopPropagation()
             $('.flip-modal').classList.add('show')
         }
-
+        
         $('.modal-login form').addEventListener('submit', function(e){
             e.preventDefault()
             var username = $('.modal-login input[name=username]').value;
@@ -168,26 +163,26 @@
                 $('.modal-login .errormsg').innerText = '用户名需输入3-8个字符，包括字母数字下划线'
                 return false
             }
-            if(!/^\w{6,10}$/.test(password)){
-                $('.modal-login .errormsg').innerText = '密码需输入6-10个字符，包括字母数字下划线'
-                return false
-            }
+            // if(!/^\w{6,10}$/.test(password)){
+            //     $('.modal-login .errormsg').innerText = '密码需输入6-10个字符，包括字母数字下划线'
+            //     return false
+            // }
 
-            // axios.post("http://43.139.215.45:80/api/User", {
-            //     action: "login",
-            //     username: username,
-            //     password: password
-            // })
-            // .then(function (response) {
-            //     console.log(response)
-            //     alert(response.data.msg)
-            //     if(response.data.ret == 0){
-            //         window.localStorage.setItem("token", response.data.token);
-            //         window.location.href = "./index.html";
-            //     }else if(localStorage.getItem("token") != null){
-            //         window.localStorage.removeItem("token");
-            //     }
-            // })
+            axios.post("api/user.jsp", {
+                action: "login",
+                username: username, 
+                password: password
+            })
+            .then(function (response) {
+                console.log(response)
+                alert(response.data.msg)
+                if(response.data.ret == 0){
+                    window.localStorage.setItem("token", response.data.token);
+                    window.location.href = "/index.html";
+                }else if(localStorage.getItem("token") != null){
+                    window.localStorage.removeItem("token");
+                }
+            }) 
 
         })
 
@@ -209,29 +204,9 @@
                 $('.modal-register .errormsg').innerText = '两次输入的密码不一致'
                 return false
             }
-<<<<<<< HEAD
-            // var username = $('.modal-register input[name=username]').value;
-            // var password = $('.modal-register input[name=password]').value;
-            // axios.post("http://43.139.215.45:80/api/User", {
-            //     action: "register",
-            //     data: {
-            //         username: username,
-            //         passwd: password
-            //     }
-            // })
-            // .then(function (response) {
-            //     console.log(response)
-            //     if(response.data.ret == 0){
-            //         alert("注册成功");
-            //         window.location.href = "./login.html";
-            //     }else{
-            //         alert(response.data.msg);
-            //     }
-            // })
-=======
             var username = $('.modal-register input[name=username]').value;
             var password = $('.modal-register input[name=password]').value;
-            axios.post("http://43.139.215.45:80/api/User", {
+            axios.post("api/user.jsp", {
                 action: "register",
                 data: {
                     username: username, 
@@ -247,7 +222,6 @@
                     alert(response.data.msg);
                 }
             })
->>>>>>> 952f81f6cdd95242d87c85cdd8281997cc160094
         })
 
     </script>
