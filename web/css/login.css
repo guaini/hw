@@ -19,7 +19,15 @@ a{
 }
 
 main {
+<<<<<<< HEAD
+    background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+    background-image: url("../imgs/3.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+=======
     background: url("../imgs/3.jpg") no-repeat fixed center center;
+>>>>>>> 952f81f6cdd95242d87c85cdd8281997cc160094
     background-size: cover;
 }
 
