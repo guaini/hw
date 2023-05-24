@@ -14,7 +14,7 @@
 </head>
 <body>
     <div class="outer-menu">
-        <input class="checkbox-toggle" type="checkbox" />
+        <input class="checkbox-toggle" type="checkbox">
         <div class="hamburger">
             <div></div>
         </div>
@@ -26,7 +26,7 @@
                         <li><a href="./upload.html">上传</a></li>
                         <li><a href="./star.html">收藏</a></li>
                         <li><a href="./set.html">设置</a></li>
-                        <li><a href="./login.html">登录/注册</a></li>
+                        <li><a href="login.html">登录/注册</a></li>
                         <li><a href="#" onclick="log_out()">登出</a></li>
                     </ul>
                 </div>
@@ -51,7 +51,11 @@
                 </div>
                 <div class="content">
                     <div class="errormsg"></div>
+<<<<<<< HEAD
                     <form action="/loginServlet" method="post">
+=======
+                    <form action="login.jsp" method="post">
+>>>>>>> 952f81f6cdd95242d87c85cdd8281997cc160094
                         <div class="input-field">
                             <i class="fa fa-user-o"></i>
                             <input name="username" type="text" placeholder="用户名">
@@ -205,6 +209,7 @@
                 $('.modal-register .errormsg').innerText = '两次输入的密码不一致'
                 return false
             }
+<<<<<<< HEAD
             // var username = $('.modal-register input[name=username]').value;
             // var password = $('.modal-register input[name=password]').value;
             // axios.post("http://43.139.215.45:80/api/User", {
@@ -223,6 +228,26 @@
             //         alert(response.data.msg);
             //     }
             // })
+=======
+            var username = $('.modal-register input[name=username]').value;
+            var password = $('.modal-register input[name=password]').value;
+            axios.post("http://43.139.215.45:80/api/User", {
+                action: "register",
+                data: {
+                    username: username, 
+                    passwd: password
+                }
+            })
+            .then(function (response) {
+                console.log(response)
+                if(response.data.ret == 0){
+                    alert("注册成功");
+                    window.location.href = "login.html";
+                }else{
+                    alert(response.data.msg);
+                }
+            })
+>>>>>>> 952f81f6cdd95242d87c85cdd8281997cc160094
         })
 
     </script>

@@ -171,7 +171,7 @@
                     <li><a href="./upload.html">上传</a></li>
                     <li><a href="./star.html">收藏</a></li>
                     <li><a href="./set.html">设置</a></li>
-                    <li><a href="./login.html">登录/注册</a></li>
+                    <li><a href="login.html">登录/注册</a></li>
                     <li><a href="#" onclick="log_out()">登出</a></li>
                 </ul>
             </div>
@@ -185,18 +185,18 @@
     </div>
     <div class="nav fr">
         <ul>
-            <li><a href="/login.html">登录/注册</a></li>
-            <li><a href="/upload.html">上传</a></li>
-            <li><a href="/star.html">收藏</a></li>
-            <li><a href="/set.html">设置</a></li>
+            <li><a href="login.html">登录/注册</a></li>
+            <li><a href="./upload.html">上传</a></li>
+            <li><a href="./star.html">收藏</a></li>
+            <li><a href="./set.html">设置</a></li>
         </ul>
     </div>
 </header>
 <div class="description">
     <h1>欢迎来到我的画廊</h1>
-    <p>这是一个数据库期末作业，前端使用 Vue + Axios，后端使用 Django + Opengauss</p>
+    <p>这是一个工程模拟训练期末作业，前端使用 Vue + Axios，后端使用 mysql</p>
     <p>该网站主要实现了登录注册、上传图片、更改个人设置、按照条件搜索图片、点赞收藏等功能</p>
-    <p>贡献者： 前端：Maple 后端：怪尼，Semi</p>
+    <p>贡献者：???</p>
 </div>
 
 <div class="tab_list">
@@ -236,7 +236,7 @@
                 } else {
                     alert("登出成功")
                     window.localStorage.removeItem("token");
-                    window.location.href = "/index.html";
+                    window.location.href = "./index.html";
                 }
             })
     }
