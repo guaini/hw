@@ -1,6 +1,58 @@
+<%@ page import="java.sql.Statement" %>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.DriverManager" %>
+<%@ page import="java.sql.ResultSet" %>
 <!DOCTYPE html>
 <html lang="en">
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    Statement conn = null;
+    String connectString = "jdbc:mysql://172.18.187.253:3306/db_image_sharing"
+            + "?autoReconnect=true&useUnicode=true"
+            + "&characterEncoding=UTF-8";
+    StringBuilder table=new StringBuilder("");
+    try{
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection con= DriverManager.getConnection(connectString,
+                "user", "123");
+        Statement stmt=con.createStatement();
+        conn = stmt;
+    }
+    catch (Exception e){
+    }
+    Statement template = conn;
+    try {
+        if(request.getParameter("reg")!=null){
+            //定义sql
+            String sql ="insert into t_user values("+request.getParameter("username")+",'','','2000-01-01','MALE','','"+request.getParameter("password")+"')";
+            //执行sql
+            int update = template.executeUpdate(sql);
+            request.setAttribute("state","注册成功");
+            request.getSession().setAttribute("username",request.getParameter("username"));
+            request.getSession().setAttribute("password",request.getParameter("password"));
+            request.getRequestDispatcher("login.jsp").forward(request,response);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    try {
+        if(request.getParameter("login")!=null){
+            //定义sql
+            String sql ="select * from t_user where nickname='"+request.getParameter("username")+"' and passwd='"+request.getParameter("password")+"'";
+            //执行sql
+            ResultSet rs = conn.executeQuery(sql);
+            if(rs.next()){
+                request.setAttribute("state","login success");
+                request.setAttribute("user",request.getParameter("username"));
+                request.setAttribute("password",request.getParameter("password"));
+                request.getRequestDispatcher("index.html").forward(request,response);
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        out.print(e.toString()+"login failed"+request.getParameter("username")+request.getParameter("password"));
+    }
+%>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,16 +95,18 @@
 <main>
     <div class="flip-modal login">
         <!-- 展示登录页面 -->
+
         <div class="modal modal-login">
             <a class="close" href="#"><i class="fa fa-close"></i></a>
             <!-- 登录 -->
+            ${state}
             <div class="tabs">
                 <a class="login active" href="#">登录</a>
                 <a class="register" href="#">注册</a>
             </div>
             <div class="content">
                 <div class="errormsg"></div>
-                <form action="loginServlet" method="post">
+                <form action="login.jsp" method="post">
                     <div class="input-field">
                         <i class="fa fa-user-o"></i>
                         <input name="username" type="text" placeholder="用户名">
@@ -62,7 +116,7 @@
                         <input name="password" type="password" placeholder="密码">
                     </div>
                     <div class="input-field">
-                        <input type="submit" value="登录">
+                        <input type="submit" name="login" value="登录">
                     </div>
                 </form>
             </div>
@@ -78,7 +132,7 @@
             </div>
             <div class="content">
                 <div class="errormsg"></div>
-                <form action="RegisterServlet" method="post">
+                <form action="login.jsp" method="post">
                     <div class="input-field">
                         <i class="fa fa-user-o"></i>
                         <input name="username" type="text" placeholder="输入用户名">
@@ -92,7 +146,7 @@
                         <input name="password2"  type="password" placeholder="再次输入密码">
                     </div>
                     <div class="input-field">
-                        <input type="submit" value="注册">
+                        <input type="submit" name="reg" value="注册">
                     </div>
                 </form>
             </div>
@@ -102,26 +156,29 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script>
+    if("<%=session.getAttribute("username") %>"!=null){
+        localStorage.setItem("token","<%=session.getAttribute("username")%>");
+    }
     function log_out(){
         if(localStorage.getItem("token") == null){
             alert("还未登录");
             return;
         }
-        axios.post("http://43.139.215.45:80/api/User", {
-            action: "logout",
-        }, {headers: {Authorization: ` ${localStorage.getItem("token")}`},
-        })
-            .then(function (response) {
-                console.log(response)
-                if(response.data.ret == 1){
-                    alert(response.data.msg);
-                    window.localStorage.removeItem("token");
-                }else{
-                    alert("登出成功")
-                    window.localStorage.removeItem("token");
-                    window.location.href = "./index.html";
-                }
-            })
+        <%--axios.post("http://43.139.215.45:80/api/User", {--%>
+        <%--    action: "logout",--%>
+        <%--}, {headers: {Authorization: ` ${localStorage.getItem("token")}`},--%>
+        <%--})--%>
+        <%--    .then(function (response) {--%>
+        <%--        console.log(response)--%>
+        <%--        if(response.data.ret == 1){--%>
+        <%--            alert(response.data.msg);--%>
+        <%--            window.localStorage.removeItem("token");--%>
+        <%--        }else{--%>
+        <%--            alert("登出成功")--%>
+        <%--            window.localStorage.removeItem("token");--%>
+        <%--            window.location.href = "./index.html";--%>
+        <%--        }--%>
+        <%--    })--%>
     }
 
     function $(selector){
@@ -154,40 +211,23 @@
         $('.flip-modal').classList.add('show')
     }
 
-    $('.modal-login form').addEventListener('submit', function(e){
-        e.preventDefault()
-        var username = $('.modal-login input[name=username]').value;
-        var password = $('.modal-login input[name=password]').value;
-        if(localStorage.getItem("token") != null){
-            alert("已经登录了");
-            return;
-        }
-        if(!/^\w{3,8}$/.test(username)){
-            $('.modal-login .errormsg').innerText = '用户名需输入3-8个字符，包括字母数字下划线'
-            return false
-        }
-        if(!/^\w{6,10}$/.test(password)){
-            $('.modal-login .errormsg').innerText = '密码需输入6-10个字符，包括字母数字下划线'
-            return false
-        }
-
-        // axios.post("http://43.139.215.45:80/api/User", {
-        //     action: "login",
-        //     username: username,
-        //     password: password
-        // })
-        // .then(function (response) {
-        //     console.log(response)
-        //     alert(response.data.msg)
-        //     if(response.data.ret == 0){
-        //         window.localStorage.setItem("token", response.data.token);
-        //         window.location.href = "./index.html";
-        //     }else if(localStorage.getItem("token") != null){
-        //         window.localStorage.removeItem("token");
-        //     }
-        // })
-
-    })
+    // $('.modal-login form').addEventListener('submit', function(e){
+    //     e.preventDefault()
+    //     var username = $('.modal-login input[name=username]').value;
+    //     var password = $('.modal-login input[name=password]').value;
+    //     if(localStorage.getItem("token") != null){
+    //         alert("已经登录了");
+    //         return;
+    //     }
+    //     if(!/^\w{3,8}$/.test(username)){
+    //         $('.modal-login .errormsg').innerText = '用户名需输入3-8个字符，包括字母数字下划线'
+    //         return false
+    //     }
+    //     if(!/^\w{6,10}$/.test(password)){
+    //         $('.modal-login .errormsg').innerText = '密码需输入6-10个字符，包括字母数字下划线'
+    //         return false
+    //     }
+    // })
 
     // $('.modal-register form').addEventListener('submit', function(e){
     //     e.preventDefault()
@@ -207,24 +247,6 @@
     //         $('.modal-register .errormsg').innerText = '两次输入的密码不一致'
     //         return false
     //     }
-    //     // var username = $('.modal-register input[name=username]').value;
-    //     // var password = $('.modal-register input[name=password]').value;
-    //     // axios.post("http://43.139.215.45:80/api/User", {
-    //     //     action: "register",
-    //     //     data: {
-    //     //         username: username,
-    //     //         passwd: password
-    //     //     }
-    //     // })
-    //     // .then(function (response) {
-    //     //     console.log(response)
-    //     //     if(response.data.ret == 0){
-    //     //         alert("注册成功");
-    //     //         window.location.href = "./login.html";
-    //     //     }else{
-    //     //         alert(response.data.msg);
-    //     //     }
-    //     // })
     // })
 
 </script>
