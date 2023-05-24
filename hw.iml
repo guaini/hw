@@ -36,7 +36,6 @@
         <jarDirectory url="file://$MODULE_DIR$/web/WEB-INF/lib" recursive="false" />
       </library>
     </orderEntry>
-<<<<<<< HEAD
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES />
@@ -47,9 +46,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="Apache Tomcat 8" level="project" />
-=======
     <orderEntry type="library" name="font-awesome" level="application" />
     <orderEntry type="library" name="servlet-api" level="project" />
->>>>>>> 952f81f6cdd95242d87c85cdd8281997cc160094
   </component>
 </module>
