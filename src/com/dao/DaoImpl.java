@@ -25,8 +25,6 @@ public class DaoImpl implements Dao{
                     "user", "123");
             Statement stmt=con.createStatement();
             conn = stmt;
-            stmt.close();
-            con.close();
         }
         catch (Exception e){
         }
@@ -36,7 +34,7 @@ public class DaoImpl implements Dao{
     public User login(User user) {
         try {
             //定义sql
-            String sql = "select * from user where UID = "+user.getUsername()+" and password ="+user.getPassword();
+            String sql = "select * from t_user where UID = "+user.getUsername()+" and password ="+user.getPassword();
             //执行sql
             ResultSet rs = template.executeQuery(sql);
             User user1 = new User();
@@ -53,16 +51,16 @@ public class DaoImpl implements Dao{
     }
 
     @Override
-    public int addUser(User user) {
+    public String addUser(User user) {
         try {
             //定义sql
-            String sql ="insert into user values(null,"+user.getUsername()+","+user.getPassword()+")";
+            String sql ="insert into t_user values("+user.getId()+",'"+user.getUsername()+"','"+user.getEmail()+"','"+user.getBirthday()+"','"+user.getGender()+"','"+user.getCountry()+"','"+user.getPassword()+"')";
             //执行sql
             int update = template.executeUpdate(sql);
-            return update;
+            return sql;
         } catch (Exception e) {
             e.printStackTrace();
-            return 0;
+            return e.toString();
         }
     }
 }

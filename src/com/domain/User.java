@@ -3,10 +3,21 @@ package com.domain;
 public class User {
     private int UID;
     private String nickname;
+    private String email;
     private String birthday;
     private String gender;
     private String country;
     private String password;
+
+    public User(){
+        UID = 0;
+        nickname = "";
+        email = "";
+        birthday = "2002-01-01";
+        gender = "Other";
+        country = "";
+        password = "";
+    }
 
     public int getId() {
         return UID;
@@ -22,6 +33,12 @@ public class User {
 
     public void setUsername(String username) {
         this.nickname = username;
+    }
+    public String getEmail(){
+        return email;
+    }
+    public void setEmail(String email){
+        this.email = email;
     }
     public String getGender() {
         return gender;
