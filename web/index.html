@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>我的画廊</title>
     <link type="text/html">
-    <link rel="stylesheet" type="text/css" href="css/float_windows.css">
+    <link href="css/float_windows.css" rel="stylesheet" type="text/css">
     <style>
 
         * {
@@ -181,7 +181,7 @@
 </div>
 <header>
     <div class="search fl">
-        <input type="search" placeholder="搜索: pid, pname, tag, uploader">
+        <input placeholder="搜索: pid, pname, tag, uploader" type="search">
         <button id="search">搜索</button>
     </div>
     <div class="nav fr">
@@ -224,8 +224,7 @@
         if (localStorage.getItem("token") == null) {
             alert("还未登录");
             window.location.href = "./login.html";
-        }
-        else {
+        } else {
             alert("登出成功")
             window.localStorage.removeItem("token");
             window.location.href = "./index.html";

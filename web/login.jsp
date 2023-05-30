@@ -27,12 +27,9 @@
             if (conn != null) {
                 rs = conn.executeQuery(query);
             }
-            if (rs != null && rs.next())
-            {
+            if (rs != null && rs.next()) {
                 output.print("username already exist.\nregister failed.\nusername: " + request.getParameter("username") + ", password: " + request.getParameter("password"));
-            }
-            else
-            {
+            } else {
                 //定义sql
                 String sql = "insert into t_user(nickname,passwd) values('" + request.getParameter("username") + "','" + request.getParameter("password") + "')";
                 //执行sql
@@ -47,7 +44,7 @@
         }
     } catch (Exception e) {
         e.printStackTrace();
-        output.print(e.toString() + "\nregister failed.\nusername: " + request.getParameter("username") + "password: " + request.getParameter("password"));
+        output.print(e + "\nregister failed.\nusername: " + request.getParameter("username") + "password: " + request.getParameter("password"));
     }
     try {
         if (request.getParameter("login") != null) {
@@ -63,14 +60,13 @@
                 session.setAttribute("user", request.getParameter("username"));
                 session.setAttribute("password", request.getParameter("password"));
                 output.print(rs.getString("UID"));
-            }
-            else {
+            } else {
                 output.print("login failed");
             }
         }
     } catch (Exception e) {
         e.printStackTrace();
-        output.print(e.toString() + "\nlogin failed.\nusername: " + request.getParameter("username") + "password: " + request.getParameter("password"));
+        output.print(e + "\nlogin failed.\nusername: " + request.getParameter("username") + "password: " + request.getParameter("password"));
     }
     output.flush();
     output.close();

@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <title>登录|注册</title>
     <!-- 图标库npmjs.com -->
 
-    <link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="css/login.css">
-    <link rel="stylesheet" type="text/css" href="css/float_windows.css">
+    <link href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/login.css" rel="stylesheet" type="text/css">
+    <link href="css/float_windows.css" rel="stylesheet" type="text/css">
 
 </head>
 <body>
@@ -55,14 +55,14 @@
                 <form action="login.jsp" method="post">
                     <div class="input-field">
                         <i class="fa fa-user-o"></i>
-                        <input name="username" type="text" placeholder="用户名">
+                        <input name="username" placeholder="用户名" type="text">
                     </div>
                     <div class="input-field">
                         <i class="fa fa-lock"></i>
-                        <input name="password" type="password" placeholder="密码">
+                        <input name="password" placeholder="密码" type="password">
                     </div>
                     <div class="input-field">
-                        <input type="submit" name="login" value="登录">
+                        <input name="login" type="submit" value="登录">
                     </div>
                 </form>
             </div>
@@ -80,18 +80,18 @@
                 <form action="login.jsp" method="post">
                     <div class="input-field">
                         <i class="fa fa-user-o"></i>
-                        <input id="username" name="username" type="text" placeholder="输入用户名">
+                        <input id="username" name="username" placeholder="输入用户名" type="text">
                     </div>
                     <div class="input-field">
                         <i class="fa fa-lock"></i>
-                        <input id="password" name="password" type="password" placeholder="输入密码">
+                        <input id="password" name="password" placeholder="输入密码" type="password">
                     </div>
                     <div class="input-field">
                         <i class="fa fa-lock"></i>
-                        <input id="password2" name="password2" type="password" placeholder="再次输入密码">
+                        <input id="password2" name="password2" placeholder="再次输入密码" type="password">
                     </div>
                     <div class="input-field">
-                        <input type="submit" name="reg" value="注册">
+                        <input name="reg" type="submit" value="注册">
                     </div>
                 </form>
             </div>
@@ -105,8 +105,7 @@
         if (localStorage.getItem("token") == null) {
             alert("还未登录");
             window.location.href = "login.html";
-        }
-        else {
+        } else {
             alert("登出成功")
             window.localStorage.removeItem("token");
             window.location.href = "index.html";
@@ -150,7 +149,7 @@
         var username = $('.modal-login input[name=username]').value;
         var password = $('.modal-login input[name=password]').value;
         let xmlhttp = new XMLHttpRequest();
-        let param = "login=true&username="+username+"&password="+password;//汉字需要编码
+        let param = "login=true&username=" + username + "&password=" + password;//汉字需要编码
         xmlhttp.open("post", "login.jsp", true);
         xmlhttp.setRequestHeader("Content-Type",
             "application/x-www-form-urlencoded");
@@ -161,10 +160,9 @@
                     || xmlhttp.status >= 304) {
                     if (xmlhttp.responseText.indexOf("login failed") === -1) {
                         alert(xmlhttp.responseText);
-                        window.localStorage.setItem("token",username);
+                        window.localStorage.setItem("token", username);
                         window.location.href = "index.html";
-                    }
-                    else {
+                    } else {
                         alert(xmlhttp.responseText);
                     }
                 } else {
@@ -207,7 +205,7 @@
                     }
                 }
             };
-            let param = "reg=true&username="+username+"&password="+password//汉字需要编码
+            let param = "reg=true&username=" + username + "&password=" + password//汉字需要编码
             xmlhttp.open("post", "login.jsp", true);
             xmlhttp.setRequestHeader("Content-Type",
                 "application/x-www-form-urlencoded");
