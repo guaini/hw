@@ -18,12 +18,13 @@
     } catch (Exception e) {
         e.printStackTrace();
     }
-
+    PrintWriter output = response.getWriter();
+    output.print("");
     Statement template = conn;
     try {
         if (request.getParameter("reg") != null) {
             //定义sql
-            String sql = "insert into t_user values(" + request.getParameter("username") + ",'','','2000-01-01','MALE','','" + request.getParameter("password") + "')";
+            String sql = "insert into t_user(nickname,passwd) values('" + request.getParameter("username") + "','" + request.getParameter("password") + "')";
             //执行sql
             if (template != null) {
                 int update = template.executeUpdate(sql);
@@ -31,14 +32,12 @@
             request.setAttribute("state", "注册成功");
             request.getSession().setAttribute("username", request.getParameter("username"));
             request.getSession().setAttribute("password", request.getParameter("password"));
-            PrintWriter output = response.getWriter();
             output.print("register successful");
             output.flush();
             output.close();
         }
     } catch (Exception e) {
         e.printStackTrace();
-        PrintWriter output = response.getWriter();
         output.print("register failed");
         output.flush();
         output.close();
@@ -53,17 +52,18 @@
                 rs = conn.executeQuery(sql);
             }
             if (rs != null && rs.next()) {
-                request.setAttribute("state", "login success");
-                request.setAttribute("user", request.getParameter("username"));
-                request.setAttribute("password", request.getParameter("password"));
-                request.getRequestDispatcher("index.html").forward(request, response);
+                request.getSession().setAttribute("id",rs.getString("UID"));
+                request.getSession().setAttribute("user",request.getParameter("username"));
+                request.getSession().setAttribute("password", request.getParameter("password"));
+                output.print(rs.getString("UID"));
+            }
+            else {
+                output.print("登录失败");
             }
         }
     } catch (Exception e) {
         e.printStackTrace();
-        PrintWriter output = response.getWriter();
         output.print(e.toString() + "login failed" + request.getParameter("username") + request.getParameter("password"));
     }
 %>
-
 

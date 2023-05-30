@@ -46,7 +46,6 @@
         <div class="modal modal-login">
             <a class="close" href="#"><i class="fa fa-close"></i></a>
             <!-- 登录 -->
-            ${state}
             <div class="tabs">
                 <a class="login active" href="#">登录</a>
                 <a class="register" href="#">注册</a>
@@ -105,22 +104,13 @@
     function log_out() {
         if (localStorage.getItem("token") == null) {
             alert("还未登录");
+            window.location.href = "login.html";
         }
-        axios.post("http://43.139.215.45:80/api/User", {
-            action: "logout",
-        }, {
-            headers: {Authorization: ` ${localStorage.getItem("token")}`},
-        }).then(function (response) {
-            console.log(response)
-            if (response.data.ret === 1) {
-                alert(response.data.msg);
-                window.localStorage.removeItem("token");
-            } else {
-                alert("登出成功")
-                window.localStorage.removeItem("token");
-                window.location.href = "./index.html";
-            }
-        })
+        else {
+            alert("登出成功")
+            window.localStorage.removeItem("token");
+            window.location.href = "index.html";
+        }
     }
 
     function $(selector) {
@@ -159,20 +149,43 @@
         e.preventDefault()
         var username = $('.modal-login input[name=username]').value;
         var password = $('.modal-login input[name=password]').value;
-        if (localStorage.getItem("token") != null) {
-            alert("已经登录了");
-            return;
-        }
-        if (!/^\w{3,8}$/.test(username)) {
-            $('.modal-login .errormsg').innerText = '用户名需输入3-8个字符，包括字母数字下划线'
-            return false
-        }
-        if (!/^\w{6,10}$/.test(password)) {
-            $('.modal-login .errormsg').innerText = '密码需输入6-10个字符，包括字母数字下划线'
-            return false
-        } else {
-
-        }
+        let xmlhttp = new XMLHttpRequest();
+        let param = "login=true&username="+username+"&password="+password;//汉字需要编码
+        xmlhttp.open("post", "login.jsp", true);
+        xmlhttp.setRequestHeader("Content-Type",
+            "application/x-www-form-urlencoded");
+        xmlhttp.send(param); // 没有参数就用null。
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status >= 200 && xmlhttp.status < 300
+                    || xmlhttp.status >= 304) {
+                    if(xmlhttp.responseText.indexOf("登录失败")==-1){
+                        window.localStorage.setItem("token",xmlhttp.responseText);
+                        window.location.href = "index.html";
+                    }
+                    else {
+                        alert(xmlhttp.responseText);
+                    }
+                } else {
+                    alert("登录失败");
+                }
+            };
+        };
+        // if (localStorage.getItem("token") !== null) {
+        //     $('.state').innerText = localStorage.getItem("token");
+        //     alert("已经登录了");
+        //     return;
+        // }
+        // if (!/^\w{3,8}$/.test(username)) {
+        //     $('.modal-login .errormsg').innerText = '用户名需输入3-8个字符，包括字母数字下划线'
+        //     return false
+        // }
+        // if (!/^\w{6,10}$/.test(password)) {
+        //     $('.modal-login .errormsg').innerText = '密码需输入6-10个字符，包括字母数字下划线'
+        //     return false
+        // } else {
+        //
+        // }
     })
 
     $('.modal-register form').addEventListener('submit', function (e) {
@@ -209,7 +222,7 @@
                 };
             };
             let param = "reg=true&username="+username+"&password="+password//汉字需要编码
-            xmlhttp.open("post", "http://localhost:8080/login.jsp", true);
+            xmlhttp.open("post", "localhost:8080/hw_war_exploded/login.jsp", true);
             xmlhttp.setRequestHeader("Content-Type",
                 "application/x-www-form-urlencoded");
             xmlhttp.send(param); // 没有参数就用null。
@@ -219,5 +232,4 @@
 </script>
 </body>
 </html>
-
 
