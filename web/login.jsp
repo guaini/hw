@@ -40,8 +40,8 @@
                     int update = template.executeUpdate(sql);
                 }
                 request.setAttribute("state", "success");
-                request.getSession().setAttribute("username", request.getParameter("username"));
-                request.getSession().setAttribute("password", request.getParameter("password"));
+                session.setAttribute("username", request.getParameter("username"));
+                session.setAttribute("password", request.getParameter("password"));
                 output.print("register successful.\nusername: " + request.getParameter("username") + "password: " + request.getParameter("password"));
             }
         }
@@ -59,9 +59,9 @@
                 rs = conn.executeQuery(sql);
             }
             if (rs != null && rs.next()) {
-                request.getSession().setAttribute("id", rs.getString("UID"));
-                request.getSession().setAttribute("user", request.getParameter("username"));
-                request.getSession().setAttribute("password", request.getParameter("password"));
+                session.setAttribute("id", rs.getString("UID"));
+                session.setAttribute("user", request.getParameter("username"));
+                session.setAttribute("password", request.getParameter("password"));
                 output.print(rs.getString("UID"));
             }
             else {
