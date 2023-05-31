@@ -15,8 +15,9 @@ CREATE TABLE t_user (
     UID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nickname VARCHAR(32),
     email VARCHAR(32),
-    birthday DATE,
-    gender ENUM('MALE', 'FEMALE', 'Other'),
+    wechat VARCHAR(32),
+    birthday INT,
+    gender INT,
     country VARCHAR(32),
     passwd VARCHAR(64)
 );

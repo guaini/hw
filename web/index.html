@@ -221,14 +221,14 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
     function log_out() {
-        if (localStorage.getItem("token") == null) {
+        if (window.localStorage.getItem("token") == null) {
             alert("还未登录");
             return;
         }
-        axios.post("api/User", {
+        axios.post("api/user.jsp", {
             action: "logout",
         }, {
-            headers: {Authorization: ` ${localStorage.getItem("token")}`},
+            headers: {Authorization: ` ${window.localStorage.getItem("token")}`},
         })
             .then(function (response) {
                 console.log(response)
