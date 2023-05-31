@@ -88,6 +88,7 @@ public void sendJsonData(String jsonStr, HttpServletResponse response) throws IO
 	String filepath = sfile.getAbsolutePath();
 	// out.print(filepath);
 	file.write(sfile);
+	 // warning: not get the user... to insert the uploader
 	String sql = "insert into t_image(URL, uploader) VALUES('" + uploadPath.replace("\\", "/") + "', 1)";
 	try {
 	    conn.execute(sql);  
