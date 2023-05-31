@@ -159,7 +159,7 @@ def main():
     cookies = get_cookie()
 
     check_time = get_check_time()
-    check_time = 0
+#    check_time = 0
 
     upload_dir(src, dest, filter_file, cookies, check_time)
 
@@ -168,7 +168,7 @@ def main():
     print("done")
 
     time.sleep(1)
-    webbrowser.open(url="http://172.18.187.253:8080/" + dest)
+#    webbrowser.open(url="http://172.18.187.253:8080/" + dest)
 
 
 if __name__ == "__main__":
