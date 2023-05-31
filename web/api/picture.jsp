@@ -45,49 +45,22 @@ public void sendJsonData(String jsonStr, HttpServletResponse response) throws IO
     JSONObject jsonData = JSONObject.fromObject(postData);
     String action = jsonData.getString("action");
     try {
-        if("login".equals(action)) {
-	    // need to check if the login has logined!!!
-	    String username = jsonData.getString("username");
-	    String password = jsonData.getString("password");
-            //定义sql
-            String sql ="select * from t_user where nickname='"+username+"' and passwd='"+password+"'";
-            //执行sql
+        if("list".equals(action)) {
+            String sql ="select * from t_image";
             ResultSet rs = conn.executeQuery(sql);
-	    String res = "";
-            if(rs.next()) {
-		res = "{\"ret\": 0, \"msg\":\"登录成功\", \"token\": \"token123213123\"}";
-	    } else {
-		res = "{\"ret\": 1, \"msg\":\"账号或密码错误\"}";
+	    String res = "{\"ret\":0, \"picList\":[";
+	    String sep = "";
+            while (rs.next()) {
+		String pid = rs.getString("pid");
+		String uploader = rs.getString("uploader");
+		String url = rs.getString("URL");
+		String width = "960"; //= rs.getString("");
+		String height = "640"; // = rs.getString("");
+		String o = "{\"url\":\"" + url + "\",\"width\":" + width + ",\"height\":" + height + "}";
+		res += sep + o;
+		sep = ",";
 	    }
-	    sendJsonData(res, response);
-	    response.getWriter().close();
-	} else if ("register".equals(action)) {
-	    jsonData = JSONObject.fromObject(jsonData.getString("data"));
-	    String username = jsonData.getString("username");
-	    String password = jsonData.getString("passwd");
-	    String sql = "select * from t_user where nickname='" + username + "'";
-	    ResultSet rs = conn.executeQuery(sql);
-	    String res = "";
-	    if (rs.next()) {
-		res = "{\"ret\": 1, \"msg\":\"用户已存在\"}";
-	    } else {
-		sql = "INSERT INTO t_user(nickname, passwd) VALUES('" + username + "','" + password + "');";
-		conn.execute(sql);
-		// warning: need to check whether insert success!!!!
-		res = "{\"ret\": 0, \"msg\":\"注册成功\", \"token\": \"token123213123\"}";
-	    }
-	    sendJsonData(res, response);
-	    response.getWriter().close();
-	} else if ("logout".equals(action)) {
-	    // need to check if the login has logined!!!
-	    String res = "";
-	    res = "{\'ret:\'0}";
-	} else if ("update".equals(ation)) {
-
-	} else if ("getinfo".equal(action)) {
-	    
-	} else {
-	    String res = "{\"ret\":1, \"msg\":\"未找到处理该请求的方法\"}";
+	    res += "]}";
 	    sendJsonData(res, response);
 	    response.getWriter().close();
 	}

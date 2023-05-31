@@ -104,7 +104,7 @@
                 alert("还未登录");
                 return;
             }
-            axios.post("http://43.139.215.45:80/api/User", {
+            axios.post("api/User", {
                 action: "logout",
             }, {headers: {Authorization: ` ${localStorage.getItem("token")}`},
             })
@@ -178,7 +178,7 @@
                 alert(response.data.msg)
                 if(response.data.ret == 0){
                     window.localStorage.setItem("token", response.data.token);
-                    window.location.href = "/index.html";
+                    window.location.href = "index.html";
                 }else if(localStorage.getItem("token") != null){
                     window.localStorage.removeItem("token");
                 }
