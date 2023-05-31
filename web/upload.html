@@ -191,7 +191,7 @@
                     }else{
                         alert("登出成功")
                         window.localStorage.removeItem("token");
-                        window.location.href = "./index.html";
+                        window.location.href = "index.html";
                     }
                 })
             }
@@ -230,7 +230,7 @@
                 fromdata.append('file', inputfile, inputfile.name);
                 fromdata.append("data", JSON.stringify(data));
                 fromdata.append("action", "upload");
-                axios.post("http://43.139.215.45:80/api/Picture/upload", fromdata, {headers: {Authorization: ` ${localStorage.getItem("token")}`},
+                axios.post("api/upload.jsp", fromdata, {headers: {Authorization: ` ${localStorage.getItem("token")}`},
                 }).then(function (response) {
                     console.log(response)
                     alert(response.data.msg)
