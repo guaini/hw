@@ -154,7 +154,7 @@ def main():
         "WEB-INF\\lib\\commons-fileupload-1.2.1.jar",
         "WEB-INF\\lib\\commons-io-1.4.jar",
         "WEB-INF\\lib\\mysql-connector-java-5.1.39-bin.jar",
-        "WEB-INF\\web.xml"
+        # "WEB-INF\\web.xml"
     ]
     cookies = get_cookie()
 
