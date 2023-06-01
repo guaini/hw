@@ -7,6 +7,8 @@
 <%@ page import="java.io.PrintWriter" %>
 <%@ page import="java.io.*" %>
 <%@ page import="net.sf.json.*" %>
+<%@ page import="java.util.logging.SimpleFormatter" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 
 
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -43,46 +45,52 @@
     Statement template = conn;
     String token = request.getHeader("Authorization");
     String action = request.getParameter("action");
+    String pid = request.getParameter("pid");
 
     try {
-        StringBuilder res = null;
-        String sql = "";
+        String res = "{\"ret\": 1}";
         boolean login = true;
         if (request.getHeader("Authorization") == null) {
-            res = new StringBuilder("{\"ret\": 1, \"msg\":\"未登录\"}");
+            res = "{\"ret\": 1, \"msg\":\"未登录\"}";
             login = false;
         }
-        if (action.equals("upload_list")) {
-            sql = "select * from t_image where uploader = '" + token + "'";
-        } else if (action.equals("favor_list")) {
-            sql = "select * from t_image,t_favorite where t_image.PID = t_favorite.PID and user = '" + token + "'";
-        }
-        if (login) {
+        if (action.equals("pic_info")) {
+            String sql = "select * from t_image where pid = '" + pid + "'";
             ResultSet rs = conn.executeQuery(sql);
-            res = new StringBuilder("{\"ret\":1, \"picList\":[");
-            String sep = "";
-            while (rs.next()) {
-                String pid = rs.getString("PID");
+            if (rs.next()) {
                 String name = rs.getString("pname");
                 String url = rs.getString("URL");
-                String date = rs.getString("upload_time");
                 String uploader = rs.getString("uploader");
-                if (action.equals("check_upload") && uploader.equals(token)) {
-                    res = new StringBuilder("{\"ret\":0, \"picList\":[");
-                }
-                String upload_time = rs.getString("upload_time");
+                String upload_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(rs.getDate("upload_time"));
                 int num_like = rs.getInt("num_like");
                 int num_star = rs.getInt("num_star");
                 int num_view = rs.getInt("num_view");
                 String width = "960"; //= rs.getString("");
                 String height = "640"; // = rs.getString("");
-                String o = "{\"url\":\"" + url + "\",\"pid\":" + pid + "\",\"pname\":" + name + "\", \"upload_time\":\"" + date + "\",\"width\":" + width + ",\"height\":" + height + ",\"uploader\":" + uploader + ",\"upload_time\":" + upload_time + ",\"num_like\":" + num_like + ",\"num_star\":" + num_star + ",\"num_view\":" + num_view + ",\"name\":" + name + "}";
-                res.append(sep).append(o);
-                sep = ",";
+                String info = "{\"url\":\"" + url + "\",\"pid\":" + pid
+                        + ",\"pname\":\"" + name + "\",\"width\":" + width + ",\"height\":" + height
+                        + ",\"uploader\":" + uploader + ",\"upload_time\":\"" + upload_time
+                        + "\",\"num_like\":" + num_like + ",\"num_star\":" + num_star
+                        + ",\"num_view\":" + num_view + ",\"name\":\"" + name + "\"}";
+                res = "{\"ret\":0, \"info\":" + info + "}";
             }
-            res.append("]}");
+        } else if (login && action.equals("check_upload")) {
+            String sql = "select uploader from t_image where PID = '" + pid + "'";
+            ResultSet rs = conn.executeQuery(sql);
+            if (rs.next()) {
+                int uid = rs.getInt("uploader");
+                sql = "select nickname from t_user where UID='" + uid + "'";
+                rs = conn.executeQuery(sql);
+                if (rs.next()) {
+                    String name = rs.getString("nickname");
+                    if (name.equals(token))
+                        res = "{\"ret\": 0}";
+                    else
+                        res = "{\"ret\": 1}";
+                }
+            }
         }
-        sendJsonData(res.toString(), response);
+        sendJsonData(res, response);
         response.getWriter().close();
     } catch (Exception e) {
         e.printStackTrace();

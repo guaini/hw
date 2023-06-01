@@ -198,7 +198,7 @@
         response.data.picList.forEach(function (imgInfo) {
             imgInfo.newHeight = baseHeight;
             imgInfo.newWidth = baseHeight * imgInfo.width / imgInfo.height;
-            imgInfo.src = "http://43.139.215.45:80" + imgInfo.url;
+            imgInfo.src = "imgs/" + imgInfo.url;
 
             if (imgInfo.newWidth + rowTotalWidth_star <= mainNodeWidth) {
                 rowList_star.push(imgInfo);
@@ -217,7 +217,7 @@
         response.data.picList.forEach(function (imgInfo) {
             imgInfo.newHeight = baseHeight;
             imgInfo.newWidth = baseHeight * imgInfo.width / imgInfo.height;
-            imgInfo.src = "http://43.139.215.45:80" + imgInfo.url;
+            imgInfo.src = "imgs/" + imgInfo.url;
 
             if (imgInfo.newWidth + rowTotalWidth_upload <= mainNodeWidth) {
                 rowList_upload.push(imgInfo);
