@@ -186,8 +186,8 @@
         rowList_upload = [];
         rowTotalWidth_star = 0;
         rowTotalWidth_upload = 0;
-        axios.get("http://43.139.215.45:80/api/Index?action=favor_list", {headers: {Authorization: ` ${localStorage.getItem("token")}`}}).then(render_star);
-        axios.get("http://43.139.215.45:80/api/Index?action=upload_list", {headers: {Authorization: ` ${localStorage.getItem("token")}`}}).then(render_upload);
+        axios.get("api/star.jsp?action=favor_list", {headers: {Authorization: ` ${localStorage.getItem("token")}`}}).then(render_star);
+        axios.get("api/star.jsp?action=upload_list", {headers: {Authorization: ` ${localStorage.getItem("token")}`}}).then(render_upload);
     }
 
     function render_star(response) {

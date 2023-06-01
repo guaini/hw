@@ -89,7 +89,8 @@ public void sendJsonData(String jsonStr, HttpServletResponse response) throws IO
 	// out.print(filepath);
 	file.write(sfile);
 	 // warning: not get the user... to insert the uploader
-	String sql = "insert into t_image(URL, uploader) VALUES('" + uploadPath.replace("\\", "/") + "', 1)";
+	String token = request.getHeader("Authorization");
+	String sql = "insert into t_image(URL, uploader) VALUES('" + uploadPath.replace("\\", "/") + "','" + token + "' )";
 	try {
 	    conn.execute(sql);  
 	} catch (Exception e) {

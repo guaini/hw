@@ -34,8 +34,8 @@
         </div>
     </div>
     <script>
-        var url = "http://43.139.215.45:80/api/Index?action=pic_info&" + decodeURI(location.search).substr(1);
-        var check = "http://43.139.215.45:80/api/Index?action=check_upload&" + decodeURI(location.search).substr(1);
+        var url = "api/star.jsp?action=pic_info&" + decodeURI(location.search).substr(1);
+        var check = "api/star_jsp?action=check_upload&" + decodeURI(location.search).substr(1);
         var app = new Vue({
             el: "#mask",
             data: {
@@ -90,7 +90,7 @@
             methods: {
                 delete_pic: function() {
                     var that = this;
-                    axios.post("http://43.139.215.45:80/api/Picture", {
+                    axios.post("api/picture.jsp", {
                         action: "delete",
                         pid: that.pid
                     }, {headers: {Authorization: ` ${localStorage.getItem("token")}`},
@@ -103,7 +103,7 @@
 
                 give_a_thumb: function() {
                     var that = this;
-                    axios.post("http://43.139.215.45:80/api/Picture", {
+                    axios.post("api/picture.jsp", {
                         action: "like",
                         pid: that.pid
                     }, {headers: {Authorization: ` ${localStorage.getItem("token")}`},
@@ -120,7 +120,7 @@
 
                 star_it: function() {
                     var that = this;
-                    axios.post("http://43.139.215.45:80/api/Picture", {
+                    axios.post("api/picture.jsp", {
                         action: "favor",
                         pid: that.pid
                     }, {headers: {Authorization: ` ${localStorage.getItem("token")}`},

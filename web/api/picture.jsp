@@ -45,8 +45,9 @@ public void sendJsonData(String jsonStr, HttpServletResponse response) throws IO
     JSONObject jsonData = JSONObject.fromObject(postData);
     String action = jsonData.getString("action");
     try {
+        String sql = "";
         if("list".equals(action)) {
-            String sql ="select * from t_image";
+            sql ="select * from t_image";
             ResultSet rs = conn.executeQuery(sql);
 	    String res = "{\"ret\":0, \"picList\":[";
 	    String sep = "";
