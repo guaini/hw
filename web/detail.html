@@ -34,8 +34,8 @@
         </div>
     </div>
     <script>
-        var url = "api/star.jsp?action=pic_info&" + decodeURI(location.search).substr(1);
-        var check = "api/star_jsp?action=check_upload&" + decodeURI(location.search).substr(1);
+        var url = "api/detail.jsp?action=pic_info&" + decodeURI(location.search).substr(1);
+        var check = "api/detail.jsp?action=check_upload&" + decodeURI(location.search).substr(1);
         var app = new Vue({
             el: "#mask",
             data: {
@@ -61,7 +61,7 @@
                     function(response){
                         that.date = response.data.info.upload_time;
                         that.author = response.data.info.uploader;
-                        that.imgSrc = "http://43.139.215.45:80" + response.data.info.url;
+                        that.imgSrc = "imgs/" + response.data.info.url;
                         that.title = response.data.info.name;
                         that.width = Number(response.data.info.width);
                         that.height = Number(response.data.info.height);
