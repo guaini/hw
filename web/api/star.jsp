@@ -53,14 +53,14 @@
                 sql = "select * from t_image where uploader = '" + token + "'";
             }
             else if(action.equals("favor_list")){
-                sql =  "select * from t_favor where uploader = '" + token + "'";
+                sql =  "select * from t_image,t_favorite where t_image.PID = t_favorite.PID and user = '" + token + "'";
             }
             else if(action.equals("pic_info")){
                 String pid = request.getParameter("pid");
                 sql = "select * from t_image where pid = '" + pid + "'";
             }
             ResultSet rs = conn.executeQuery(sql);
-            String res = "{\"ret\":0, \"picList\":[";
+            String res = "{\"ret\":1, \"picList\":[";
             String sep = "";
             while (rs.next()) {
                 String pid = rs.getString("pid");
@@ -68,7 +68,7 @@
                 String url = rs.getString("URL");
                 String uploader = rs.getString("uploader");
                 if(action.equals("check_upload")&&uploader.equals(token)){
-                    
+                    res = "{\"ret\":0, \"picList\":[";
                 }
                 String upload_time = rs.getString("upload_time");
                 int num_like = rs.getInt("num_like");
