@@ -159,7 +159,7 @@ def main():
     cookies = get_cookie()
 
     check_time = get_check_time()
-#    check_time = 0
+    check_time = 0
 
     upload_dir(src, dest, filter_file, cookies, check_time)
 

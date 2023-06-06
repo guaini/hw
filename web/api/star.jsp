@@ -29,6 +29,7 @@
 
 <%
     Statement conn = null;
+    Statement conn2 = null;
     String connectString = "jdbc:mysql://172.18.187.253:3306/db_image_sharing"
             + "?autoReconnect=true&useUnicode=true"
             + "&characterEncoding=UTF-8";
@@ -37,6 +38,7 @@
         Connection con = DriverManager.getConnection(connectString,
                 "user", "123");
         conn = con.createStatement();
+        conn2 = con.createStatement();
     } catch (Exception e) {
         e.printStackTrace();
     }
@@ -52,14 +54,20 @@
             res = new StringBuilder("{\"ret\": 1, \"msg\":\"未登录\"}");
             login = false;
         }
+        sql = "select UID from t_user where nickname='" + token + "'";
+        ResultSet rs = conn.executeQuery(sql);
+        int uid = 0;
+        if (rs.next()) {
+            uid = rs.getInt("UID");
+        }
         if (action.equals("upload_list")) {
-            sql = "select * from t_image where uploader = '" + token + "'";
+            sql = "select * from t_image where uploader = '" + uid + "'";
         } else if (action.equals("favor_list")) {
-            sql = "select * from t_image,t_favorite where t_image.PID = t_favorite.PID and user = '" + token + "'";
+            sql = "select * from t_image,t_favorite where t_image.PID = t_favorite.PID and user = '" + uid + "'";
         }
         if (login) {
-            ResultSet rs = conn.executeQuery(sql);
-            res = new StringBuilder("{\"ret\":1, \"picList\":[");
+            rs = conn2.executeQuery(sql);
+            res = new StringBuilder("{\"ret\":0, \"picList\":[");
             String sep = "";
             while (rs.next()) {
                 String pid = rs.getString("PID");
@@ -76,7 +84,7 @@
                 int num_view = rs.getInt("num_view");
                 String width = "960"; //= rs.getString("");
                 String height = "640"; // = rs.getString("");
-                String o = "{\"url\":\"" + url + "\",\"pid\":" + pid + "\",\"pname\":" + name + "\", \"upload_time\":\"" + date + "\",\"width\":" + width + ",\"height\":" + height + ",\"uploader\":" + uploader + ",\"upload_time\":" + upload_time + ",\"num_like\":" + num_like + ",\"num_star\":" + num_star + ",\"num_view\":" + num_view + ",\"name\":" + name + "}";
+                String o = "{\"url\":\"" + url + "\",\"pid\":" + pid + ",\"pname\":\"" + name + "\", \"upload_time\":\"" + date + "\",\"width\":" + width + ",\"height\":" + height + ",\"uploader\":" + uploader + ",\"num_like\":" + num_like + ",\"num_star\":" + num_star + ",\"num_view\":" + num_view + ",\"name\":\"" + name + "\",\"msg\":\"" + "收藏成功!\"}" ;
                 res.append(sep).append(o);
                 sep = ",";
             }

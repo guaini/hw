@@ -29,6 +29,9 @@
 
 <%
     Statement conn = null;
+    Statement conn2 = null;
+    Statement conn3 = null;
+    Statement conn4 = null;
     String connectString = "jdbc:mysql://172.18.187.253:3306/db_image_sharing"
             + "?autoReconnect=true&useUnicode=true"
             + "&characterEncoding=UTF-8";
@@ -37,6 +40,9 @@
         Connection con = DriverManager.getConnection(connectString,
                 "user", "123");
         conn = con.createStatement();
+        conn2 = con.createStatement();
+        conn3 = con.createStatement();
+        conn4 = con.createStatement();
     } catch (Exception e) {
         e.printStackTrace();
     }
@@ -45,6 +51,7 @@
     String postData = getPostData(request.getInputStream(), request.getContentLength());
     JSONObject jsonData = JSONObject.fromObject(postData);
     String action = jsonData.getString("action");
+    String token = request.getHeader("Authorization");
     try {
         String sql = "";
         if ("list".equals(action)) {
@@ -65,6 +72,62 @@
                 sep = ",";
             }
             res.append("]}");
+            sendJsonData(res.toString(), response);
+            response.getWriter().close();
+        } else {
+            int pid = jsonData.getInt("pid");
+            StringBuilder res = null;
+            boolean login = true;
+            if (request.getHeader("Authorization") == null) {
+                res = new StringBuilder("{\"ret\": 1, \"msg\":\"未登录\"}");
+                login = false;
+            }
+//            if (action.equals("like")) {
+//                sql = "update t_image set num_like ="
+//            } else if (action.equals("favor")) {
+//                sql = "select * from t_image,t_favorite where t_image.PID = t_favorite.PID and user = '" + token + "'";
+//            }
+            if (true) {
+                sql = "select UID from t_user where nickname='" + token + "'";
+                ResultSet rs = conn.executeQuery(sql);
+                int uid = 0;
+                if (rs.next()) {
+                    uid = rs.getInt("UID");
+                }
+                sql = "select * from t_image where PID='" + pid+"'";
+                rs = conn2.executeQuery(sql);
+                res = new StringBuilder("{\"ret\":0, ");
+                String sep = "";
+                while (rs.next()) {
+                    String name = rs.getString("pname");
+                    String url = rs.getString("URL");
+                    String date = rs.getString("upload_time");
+                    String uploader = rs.getString("uploader");
+                    String upload_time = rs.getString("upload_time");
+                    int num_like = rs.getInt("num_like");
+                    int num_star = rs.getInt("num_star");
+                    int num_view = rs.getInt("num_view");
+                    String width = "960"; //= rs.getString("");
+                    String height = "640"; // = rs.getString("");
+                    if(action.equals("like")){
+                        num_like = num_like + 1;
+                        sql = "update t_image set num_like =" + num_like + " where PID ='" + pid + "'";
+                    }
+                    else if(action.equals("favor")){
+                        num_star = num_star + 1;
+                        sql = "update t_image set num_star =" + num_star + " where PID ='" + pid + "'";
+                        String sql2 = "insert into t_favorite(PID,user) VALUES("+ pid + "," + uid + ")";
+                        conn4.execute(sql2);
+                    }
+                    conn3.executeUpdate(sql);
+                    String o = "\"url\":\"" + url + "\",\"pid\":" + pid + ",\"pname\":\"" + name + "\", \"upload_time\":\"" + date + "\",\"width\":" + width + ",\"height\":" + height + ",\"uploader\":" + uploader + ",\"num_like\":" + num_like + ",\"num_star\":" + num_star + ",\"num_view\":" + num_view + ",\"name\":" + name + ",\"msg\":\"" + "收藏成功!\"" ;
+                    res.append(o);
+//                    sep = ",";
+                    out.print(o.toString());
+                }
+
+                res.append("}");
+            }
             sendJsonData(res.toString(), response);
             response.getWriter().close();
         }
