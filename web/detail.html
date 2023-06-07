@@ -90,14 +90,14 @@
             methods: {
                 delete_pic: function() {
                     var that = this;
-                    axios.post("api/picture.jsp", {
+                    axios.post("api/detail.jsp", {
                         action: "delete",
                         pid: that.pid
                     }, {headers: {Authorization: ` ${localStorage.getItem("token")}`},
                     })
                     .then(function (response) {
                         alert(response.data.msg)
-                        window.location.href = "/index.html";
+                        window.location.href = "./index.html";
                     })
                 },
 

@@ -7,6 +7,8 @@
 <%@ page import="java.io.PrintWriter" %>
 <%@ page import="java.io.*" %>
 <%@ page import="net.sf.json.*" %>
+<%@ page import="java.util.logging.SimpleFormatter" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 
 
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -48,7 +50,7 @@
 
     try {
         StringBuilder res = null;
-        String sql = "";
+        String sql;
         boolean login = true;
         if (request.getHeader("Authorization") == null) {
             res = new StringBuilder("{\"ret\": 1, \"msg\":\"未登录\"}");
@@ -73,18 +75,19 @@
                 String pid = rs.getString("PID");
                 String name = rs.getString("pname");
                 String url = rs.getString("URL");
-                String date = rs.getString("upload_time");
-                String uploader = rs.getString("uploader");
-                if (action.equals("check_upload") && uploader.equals(token)) {
-                    res = new StringBuilder("{\"ret\":0, \"picList\":[");
+                String uploader = "";
+                String sqlu = "select nickname from t_user where UID='" + uid + "'";
+                ResultSet rs2 = conn.executeQuery(sqlu);
+                if (rs2.next()) {
+                    uploader = rs2.getString("nickname");
                 }
-                String upload_time = rs.getString("upload_time");
+                String upload_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(rs.getDate("upload_time"));
                 int num_like = rs.getInt("num_like");
                 int num_star = rs.getInt("num_star");
                 int num_view = rs.getInt("num_view");
                 String width = "960"; //= rs.getString("");
                 String height = "640"; // = rs.getString("");
-                String o = "{\"url\":\"" + url + "\",\"pid\":" + pid + ",\"pname\":\"" + name + "\", \"upload_time\":\"" + date + "\",\"width\":" + width + ",\"height\":" + height + ",\"uploader\":" + uploader + ",\"num_like\":" + num_like + ",\"num_star\":" + num_star + ",\"num_view\":" + num_view + ",\"name\":\"" + name + "\",\"msg\":\"" + "收藏成功!\"}" ;
+                String o = "{\"url\":\"" + url + "\",\"pid\":" + pid + ",\"pname\":\"" + name + "\", \"upload_time\":\"" + upload_time + "\",\"width\":" + width + ",\"height\":" + height + ",\"uploader\":" + uploader + ",\"num_like\":" + num_like + ",\"num_star\":" + num_star + ",\"num_view\":" + num_view + ",\"name\":\"" + name + "\",\"msg\":\"" + "收藏成功!\"}" ;
                 res.append(sep).append(o);
                 sep = ",";
             }
