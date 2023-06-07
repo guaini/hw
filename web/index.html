@@ -267,19 +267,19 @@
         rowList = [];
         rowTotalWidth = 0;
         if (choice === 'date') {
-            axios.get("http://43.139.215.45:80/api/Index?action=date").then(render);
+            axios.get("api/sort.jsp?action=date").then(render);
         } else if (choice === 'pid') {
-            axios.get("http://43.139.215.45:80/api/Index?action=pid").then(render);
+            axios.get("api/sort.jsp?action=pid").then(render);
         } else if (choice === 'star') {
-            axios.get("http://43.139.215.45:80/api/Index?action=star").then(render);
+            axios.get("api/sort.jsp?action=star").then(render);
         } else if (choice === 'like') {
-            axios.get("http://43.139.215.45:80/api/Index?action=like").then(render);
+            axios.get("api/sort.jsp?action=like").then(render);
         } else if (choice === 'pname') {
-            axios.get("http://43.139.215.45:80/api/Index?action=name").then(render);
+            axios.get("api/sort.jsp?action=name").then(render);
         } else if (choice === '') {
             getData().then(render)
         } else {
-            axios.get("http://43.139.215.45:80/search?key=" + choice).then(render);
+            axios.get("api/search.jsp?key=" + choice).then(render);
         }
     }
 

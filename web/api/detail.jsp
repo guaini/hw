@@ -44,8 +44,20 @@
     }
     Statement template = conn;
     String token = request.getHeader("Authorization");
-    String action = request.getParameter("action");
-    String pid = request.getParameter("pid");
+    String action;
+    String pid;
+    if (request.getMethod().equals("GET")) {
+        action = request.getParameter("action");
+        pid = request.getParameter("pid");
+    }
+    else {
+        String postData = getPostData(request.getInputStream(), request.getContentLength());
+        JSONObject jsonData = JSONObject.fromObject(postData);
+        action = jsonData.getString("action");
+        pid = jsonData.getString("pid");
+    }
+
+
 
     try {
         String res = "{\"ret\": 1}";
@@ -89,6 +101,12 @@
                         res = "{\"ret\": 1}";
                 }
             }
+        } else if (login && action.equals("delete")) {
+            String sql = "delete from t_image where PID = " + pid;
+            if (conn != null) {
+                conn.execute(sql);
+            }
+            res = "{\"ret\": 0, \"msg\":\"删除成功\"}";
         }
         sendJsonData(res, response);
         response.getWriter().close();
